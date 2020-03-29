@@ -1,0 +1,21 @@
+amphibians_iucn=st_read(file.choose())
+amphibians_iucn_tmp=amphibians_iucn[,c('binomial','category')]
+st_geometry(amphibians_iucn_tmp) <- NULL
+niassa=st_read(file.choose())
+colnames(amphibians_iucn_tmp)
+test=merge(amphibians, amphibians_iucn_tmp, by.x='BINOMIAL', by.y='binomial', sort = TRUE)
+colnames(tmp)
+class(test)
+get_wege(target_area=niassa,input=test,x='decimallongitude',y='decimallatitude',species='BINOMIAL',category='category',res = 1)
+
+get_wege(target_area=niassa,input=amphibians_iucn,x='decimallongitude',y='decimallatitude',species='binomial',category='category')
+
+library(tidyverse)
+input %>% group_by(BINOMIAL) %>% summarise(geometry = sf::st_combine(geometry)) %>%
+  ungroup()
+
+x <- aggregate(input,
+               by = list(input$BINOMIAL),
+               FUN = mean)
+?aggregate
+aggregate(BINOMIAL ~ geometry, data=input, FUN=st_combine)

@@ -1,0 +1,78 @@
+library(ggplot2)
+library(raster)
+library(sf)
+x=c("a","b","c")
+y=c(1,2,3)
+xy=cbind.data.frame(x,y)
+ggplot(data=xy,aes(x=x,y=y))+
+  geom_point()
+
+
+library(extrafont)
+fonts()
+
+names(pdfFonts())
+pdfFonts()[59]=NULL
+
+df <-
+  data.frame(
+    key = c("Compliance", "Information Technology"),
+    budget = c(25000, 15000)
+  )
+
+a=ggplot(data = df) +
+  geom_bar(aes(x=key, y = budget), stat = "identity") +
+  labs(x = "Department",y = "Budget in $", title = "Budget by Department", subtitle = "Budgeted Amount Distribution for XXX", caption = Sys.Date()) +
+  theme(text=element_text(family="Gill Sans"))
+
+
+pdf('test.pdf',family="GillSans-Light")
+print(a)
+dev.off()
+
+
+pdf("font_plot.pdf", family="Impact", width=4, height=4)
+plot(mtcars$mpg, mtcars$wt,
+     main = "Fuel Efficiency of 32 Cars",
+     xlab = "Weight (x1000 lb)",
+     ylab = "Miles per Gallon")
+dev.off()
+
+library(extrafont)
+font_import()
+fonts()
+fonttable()
+loadfonts()
+test=st_read(file.choose())
+a=ggplot()+
+  geom_sf(test)
+
+
+word <- "Minstrelsy of the Scottish Border" followed by
+
+bquote('Places mentioned in Walter Scotts',~italic(.(word)))
+
+"Places mentioned in Walter Scott's Minstrelsy of the Scottish Border (Government Area Dec. 2019)")
+
+fonts()
+title_a=expression(atop('Places mentioned in Walter Scotts',
+                        ~italic("Minstrelsy of the Scottish Border")~'(Government Area Dec. 2019)'))
+a=ggplot(data = test) +
+  geom_sf(aes(fill = st_areasha),lwd = 0.01,color='grey20')+
+  labs(title = title_a,caption = Sys.Date())+
+  theme(plot.title = element_text(hjust = 0.5,size=15))+
+  theme(text=element_text(family="Verdana"))+
+  theme(plot.margin = unit(c(1,1,1,1), "cm"),panel.grid.major = element_line(colour = "transparent"),plot.background = element_rect(fill = "transparent"),panel.background = element_rect(fill = "white"))
+
+#loadfonts()
+
+pdf('test.pdf',width = 10,height = 15)
+#jpeg('test.jpeg')
+print(a)
+dev.off()
+
+?atop
+
+a = 'text'
+plot(1,1, main=bquote(italic(.(a))))
+plot(1,1, main=substitute(italic(x), list(x=a)))

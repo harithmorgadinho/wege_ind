@@ -1,0 +1,379 @@
+uk_maps=st_read(file.choose())
+uk_maps$COUNTY
+uk_maps$lad19nm
+
+nrow(uk_maps2)
+pdf('test_0.pdf')
+print(uk_maps)
+dev.off()
+
+uk_borders=st_read(file.choose())
+scotland=uk_borders[uk_borders$NAME_1=='Scotland',]
+scotland_ln <- st_cast(scotland$geometry, "MULTILINESTRING")
+bbox(scotland_ln)
+e=extent(c(-13.69139,0.007812467,54.63292,61.52708))
+e=extent(c(-13.69139,0.007812467,54.63292,55.5))
+e=extent(c(-3.5,0.007812467,54.63292,55.82))
+border1=st_crop(scotland_ln,e)
+plot(border1)
+plot(scotland_ln)
+e=extent(c(-4.97,-4.5,54.63292,54.9))
+border2=st_crop(scotland_ln,e)
+plot(border2)
+
+pdf('test_0.pdf')
+plot(border1)
+dev.off()
+
+pdf('test_0.pdf')
+plot(border)
+dev.off()
+
+
+
+
+sort(uk_county$County)
+unique(sort(uk_maps$lad19nm))
+sort(uk_maps$lad19nm)
+
+
+setdiff(uk_county$County,uk_maps$lad19nm)
+test=as.data.frame(sort(as.character(uk_maps$COUNTY)))
+test$value=0
+colnames(test)=c('county','value')
+write.csv(test,'counties_uk_2.csv',row.names = F)
+
+
+uk_maps$values=round(runif(nrow(uk_maps), min=0, max=120),0)
+
+final_xls=read.csv(file.choose(),stringsAsFactors = F,sep=';')
+#final_xls=final_xls[1:382,]
+
+uk_maps2=merge(x=uk_maps,y=final_xls,by.x='lad19nm',by.y='counties')
+setdiff(uk_maps$lad19nm,final_xls$counties)
+grep(x=final_xls$counties,pattern = 'Bristol')
+final_xls[44,]
+final_xls$counties=gsub(x=final_xls$counties,pattern = 'Bristol City of',replacement = 'Bristol, City of')
+
+grep(x=final_xls$counties,pattern = 'Kingston')
+final_xls[178,]
+final_xls$counties=gsub(x=final_xls$counties,pattern = 'Kingston upon Hull City of',replacement = 'Kingston upon Hull, City of')
+
+grep(x=final_xls$counties,pattern = 'Herefordshire')
+final_xls[159,]
+final_xls$counties=gsub(x=final_xls$counties,pattern = 'Herefordshire  County of',replacement = 'Herefordshire, County of')
+
+grep(x=final_xls$counties,pattern = 'Bournemouth')
+final_xls[35,]
+final_xls$counties=gsub(x=final_xls$counties,pattern = 'Bournemouth,Christchurch and Poole',replacement = 'Bournemouth, Christchurch and Poole')
+
+grep(x=final_xls$counties,pattern = 'Hull')
+final_xls[35,]
+final_xls$counties=gsub(x=final_xls$counties,pattern = 'Bournemouth,Christchurch and Poole',replacement = 'Bournemouth, Christchurch and Poole')
+
+uk_maps2=merge(x=uk_maps,y=final_xls,by.x='lad19nm',by.y='counties')
+setdiff(uk_maps$lad19nm,final_xls$counties)
+
+
+
+nrow(uk_maps)
+nrow(final_xls)
+nrow(uk_maps2)
+
+max(final_xls$Values)
+
+a=ggplot(data = uk_maps2) +
+  geom_sf(aes(fill = Values),lwd = 0.01,color='transparent') +
+  scale_fill_gradient(low = '#CACDD7',high = '#3273A2')+
+  #scale_fill_gradientn(colours = c(low,high),limits=c(0,1))+
+  theme(panel.grid.major = element_line(colour = "transparent"),plot.background = element_rect(fill = "transparent"),panel.background = element_rect(fill = "grey95"),legend.position = 'right',legend.title = element_text('none'))+
+  coord_sf(datum = NA)
+pdf('test_1.pdf')
+print(a)
+dev.off()
+
+a=ggplot(data = uk_maps) +
+  geom_sf(aes(fill = values),lwd = 0.01,color='transparent') +
+  scale_fill_gradientn(colours = c('steelblue','khaki','tomato'))+
+  #scale_fill_gradientn(colours = c(low,high),limits=c(0,1))+
+  theme(panel.grid.major = element_line(colour = "transparent"),plot.background = element_rect(fill = "transparent"),panel.background = element_rect(fill = "grey95"),legend.position = 'right',legend.title = element_text('none'))+
+  coord_sf(datum = NA)
+  
+pdf('test_3.pdf')
+print(a)
+dev.off()
+
+
+uk_maps2$cuts=cut(uk_maps2$Values,breaks=c(seq(from=1,to=490,by=45),max(uk_maps2$Values)),include.lowest = TRUE)
+
+
+pal=colorRampPalette(c('steelblue','khaki','tomato'))
+a=ggplot(data = uk_maps2) +
+  geom_sf(aes(fill = cuts),lwd = 0.005,color='transparent') +
+  scale_fill_manual(values = pal(12),na.value='grey80')+
+  theme(panel.grid.major = element_line(colour = "transparent"),plot.background = element_rect(fill = "transparent"),panel.background = element_rect(fill = "grey95"),legend.position = 'right',legend.title = element_blank())+
+  coord_sf(datum = NA)
+
+pdf('test_4v2.pdf')
+print(a)
+dev.off()
+
+round((max(uk_maps$values)/10),0)
+
+uk_maps$cuts=cut(uk_maps$values,breaks=seq(from=1,to=121,by=10),include.lowest = TRUE)
+
+pal=colorRampPalette(c('grey85','steelblue'))
+a=ggplot(data = uk_maps2) +
+  geom_sf(aes(fill = cuts),lwd = 0.005,color='transparent') +
+  scale_fill_manual(values = pal(12),na.value='grey50')+
+  theme(panel.grid.major = element_line(colour = "transparent"),plot.background = element_rect(fill = "transparent"),panel.background = element_rect(fill = "white"),legend.position = 'right',legend.title = element_blank())+
+  coord_sf(datum = NA)
+
+pdf('test_5.pdf')
+print(a)
+dev.off()
+
+pal=colorRampPalette(c('grey95','steelblue'))
+a=ggplot(data = uk_maps2) +
+  geom_sf(aes(fill = cuts),lwd = 0.005,color='transparent') +
+  scale_fill_manual(values = pal(12),na.value='grey50')+
+  theme(panel.grid.major = element_line(colour = "transparent"),plot.background = element_rect(fill = "transparent"),panel.background = element_rect(fill = "grey20"),legend.position = 'none',legend.title = element_blank())+
+  coord_sf(datum = NA)+
+  theme(plot.background = element_rect(fill = "grey20"))
+
+pdf('test_6.pdf',width = 2.75,height = 5)
+print(a)
+dev.off()
+
+pal=colorRampPalette(c('grey85','darkred'))
+a=ggplot(data = uk_maps2) +
+  geom_sf(aes(fill = cuts),lwd = 0.005,color='transparent') +
+  scale_fill_manual(values = pal(12),na.value='grey50')+
+  theme(panel.grid.major = element_line(colour = "transparent"),plot.background = element_rect(fill = "transparent"),panel.background = element_rect(fill = "white"),legend.position = 'right',legend.title = element_blank())+
+  coord_sf(datum = NA)+
+  theme(legend.text = element_text(
+    margin = margin(l = 5, unit = "pt")))
+
+pdf('test_7.pdf')
+print(a)
+dev.off()
+
+pal=colorRampPalette(c('grey85','steelblue'))
+a=ggplot(data = uk_maps2) +
+  geom_sf(aes(fill = Values),lwd = 0.005,color='transparent') +
+  scale_fill_gradientn(colors = c('grey85','steelblue'),na.value='grey50',breaks=c(0,245,490),limits=c(1,max(uk_maps2$Values)))+
+  #scale_fill_manual(values = pal(12),na.value='grey50')+
+  theme(panel.grid.major = element_line(colour = "transparent"),plot.background = element_rect(fill = "transparent"),panel.background = element_rect(fill = "white"),legend.position = 'bottom',legend.title = element_blank())+
+  coord_sf(datum = NA)+
+theme(legend.text = element_text(
+    margin = margin(l = 5, unit = "pt")))+
+  #guides(fill = guide_legend(nrow = 1))+
+  theme(legend.key.width=unit(1.5, "cm"),legend.spacing.y = unit(0.5,"cm"),legend.key.height =unit(0.5, "cm"))
+
+pdf('test_8v2.pdf')
+print(a)
+dev.off()
+
+
+uk_maps2$cuts=cut(uk_maps2$Values,breaks=c(seq(from=0,to=437,by=10),max(uk_maps2$Values)),include.lowest = TRUE)
+my_y_title <- expression(paste("Places mentioned in Walter Scott's ", italic("Minstrelsy"), '\n',italic("of the Scottish Border")," (Government Area Dec. 2019)"))
+
+uk_maps2$cuts=cut(uk_maps2$Values,breaks=c(seq(from=0,to=490,by=10),max(uk_maps2$Values)),include.lowest = TRUE)
+uk_maps2$cuts=cut(uk_maps2$Values,breaks=seq(from=0,to=490,by=10),include.lowest = TRUE)
+
+pal=colorRampPalette(c('grey85','steelblue'))
+a=ggplot(data = uk_maps2) +
+  geom_sf(aes(fill = cuts),lwd = 0.01,color='grey20') +
+  geom_sf(data=border1,lwd = 0.5,color='black')+
+  scale_fill_manual(values = pal(11),na.value='grey50')+
+  theme(panel.grid.major = element_line(colour = "transparent"),plot.background = element_rect(fill = "transparent"),panel.background = element_rect(fill = "white"),legend.position = 'right',legend.title = element_blank())+
+  coord_sf(datum = NA)+
+  theme(legend.text = element_text(
+    margin = margin(l = 5, unit = "pt")))
+  #labs( title= my_y_title )+
+  #labs( title="Places mentioned in Walter Scott's Minstrelsy \nof the Scottish #Border (Government Area Dec. 2019)")+
+  #theme(plot.title = element_text(hjust = 0.5))
+
+pdf('test_9v2.pdf')
+print(a)
+dev.off()
+
+svg('test_9.svg')
+print(a)
+dev.off()
+
+pdf('test_9v2.pdf')
+print(a)
+dev.off()
+
+png('test_9.png',width = 40000,height = 70000,units = 'px',pointsize = 10)
+print(a)
+dev.off()
+
+
+
+grep(uk_maps2$lad19nm,pattern='Glasgow')
+
+
+pal=colorRampPalette(c('steelblue','khaki','tomato'))
+a=ggplot(data = uk_maps2) +
+  geom_sf(aes(fill = cuts),lwd = 0.01,color='grey20') +
+  geom_sf(data=border1,lwd = 0.5,color='black')+
+  scale_fill_manual(values = pal(11),na.value='grey50')+
+  theme(panel.grid.major = element_line(colour = "transparent"),plot.background = element_rect(fill = "transparent"),panel.background = element_rect(fill = "white"),legend.position = 'right',legend.title = element_blank())+
+  coord_sf(datum = NA)+
+  theme(legend.text = element_text(
+    margin = margin(l = 5, unit = "pt")))+
+#labs( title= 'test' )+
+#labs( title="Places mentioned in Walter Scott's Minstrelsy \nof the Scottish #Border (Government Area Dec. 2019)")+
+#theme(plot.title = element_text(hjust = 0.5))
+#theme_gray(base_family = "Arial Black")
+pdf('test_9_b.pdf')
+print(a)
+dev.off()
+
+svg('test_9_b.svg')
+print(a)
+dev.off()
+
+
+pdf('test_9_b.pdf')
+print(a)
+dev.off()
+
+png('test_9_b.png',width = 4,height = 7,units = 'in',res = 600)
+print(a)
+dev.off()
+
+
+
+csv_2=read.csv(file.choose(),stringsAsFactors = F,sep=';')
+
+uk_maps3=st_transform(uk_maps2,crs='+proj=longlat +datum=WGS84 +no_defs')
+uk_maps3=st_transform(border1,crs='+proj=longlat +datum=WGS84 +no_defs')
+
+pal=colorRampPalette(c('steelblue','khaki','tomato'))
+a=ggplot() +
+  geom_sf(data = uk_maps3,lwd = 0.01,color='transparent',bg='grey80') +
+  geom_point(data = csv_2, aes(x = long, y = lat, size = values), color = "steelblue",pch=21)+
+  geom_sf(data=border1,lwd = 0.5,color='black')+
+  #scale_fill_manual(values = pal(12),na.value='grey50')+
+  theme(panel.grid.major = element_line(colour = "transparent"),plot.background = element_rect(fill = "transparent"),panel.background = element_rect(fill = "white"),legend.position = 'right',legend.title = element_blank(),axis.title = element_blank())+
+  coord_sf(datum = NA)+
+  theme(legend.text = element_text(
+    margin = margin(l = 5, unit = "pt")))
+
+pdf('map_2_test1.pdf')
+print(a)
+dev.off()
+
+a=ggplot() +
+  geom_sf(data = uk_maps3,lwd = 0.01,color='transparent',bg='grey80') +
+  geom_point(data = csv_2, aes(x = long, y = lat, size = values), color = "red",pch=21)+
+  geom_sf(data=border1,lwd = 0.5,color='black')+
+  #scale_fill_manual(values = pal(12),na.value='grey50')+
+  theme(panel.grid.major = element_line(colour = "transparent"),plot.background = element_rect(fill = "transparent"),panel.background = element_rect(fill = "white"),legend.position = 'right',legend.title = element_blank(),axis.title = element_blank())+
+  coord_sf(datum = NA)+
+  theme(legend.text = element_text(
+    margin = margin(l = 5, unit = "pt")))
+
+pdf('map_2_test2.pdf')
+print(a)
+dev.off()
+
+a=ggplot() +
+  geom_sf(data = uk_maps3,lwd = 0.01,color='transparent',bg='grey80') +
+  geom_point(data = csv_2, aes(x = long, y = lat, size = values), color = "tomato",pch=21,fill='tomato')+
+  geom_sf(data=border1,lwd = 0.5,color='black')+
+  #scale_fill_manual(values = pal(12),na.value='grey50')+
+  theme(panel.grid.major = element_line(colour = "transparent"),plot.background = element_rect(fill = "transparent"),panel.background = element_rect(fill = "white"),legend.position = 'right',legend.title = element_blank(),axis.title = element_blank())+
+  coord_sf(datum = NA)+
+  theme(legend.text = element_text(
+    margin = margin(l = 5, unit = "pt")))
+
+pdf('map_2_test3.pdf')
+print(a)
+dev.off()
+
+a=ggplot() +
+  geom_sf(data = uk_maps3,lwd = 0.01,color='transparent',bg='grey80') +
+  geom_point(data = csv_2, aes(x = long, y = lat, size = values), color = "steelblue",pch=21,fill='steelblue')+
+  geom_sf(data=border1,lwd = 0.5,color='black')+
+  #scale_fill_manual(values = pal(12),na.value='grey50')+
+  theme(panel.grid.major = element_line(colour = "transparent"),plot.background = element_rect(fill = "transparent"),panel.background = element_rect(fill = "white"),legend.position = 'right',legend.title = element_blank(),axis.title = element_blank())+
+  coord_sf(datum = NA)+
+  theme(legend.text = element_text(
+    margin = margin(l = 5, unit = "pt")))
+
+pdf('map_2_test4.pdf')
+print(a)
+dev.off()
+
+
+a=ggplot() +
+  geom_sf(data = uk_maps3,lwd = 0.01,color='transparent',bg='grey80') +
+  geom_point(data = csv_2, aes(x = long, y = lat, size = values), color = "black",pch=21,fill='tomato')+
+  geom_sf(data=border1,lwd = 0.5,color='black')+
+  #scale_fill_manual(values = pal(12),na.value='grey50')+
+  theme(panel.grid.major = element_line(colour = "transparent"),plot.background = element_rect(fill = "transparent"),panel.background = element_rect(fill = "white"),legend.position = 'right',legend.title = element_blank(),axis.title = element_blank())+
+  coord_sf(datum = NA)+
+  theme(legend.text = element_text(
+    margin = margin(l = 5, unit = "pt")))
+
+pdf('map_2_test5.pdf')
+print(a)
+dev.off()
+
+a=ggplot() +
+  geom_sf(data = uk_maps3,lwd = 0.01,color='transparent',bg='grey80') +
+  geom_point(data = csv_2, aes(x = long, y = lat, size = Values), color = "black",pch=21,fill='steelblue')+
+  geom_sf(data=border1,lwd = 0.5,color='black')+
+  #scale_fill_manual(values = pal(12),na.value='grey50')+
+  theme(panel.grid.major = element_line(colour = "transparent"),plot.background = element_rect(fill = "transparent"),panel.background = element_rect(fill = "white"),legend.position = 'right',legend.title = element_blank(),axis.title = element_blank())+
+  coord_sf(datum = NA)+
+  theme(legend.text = element_text(
+    margin = margin(l = 5, unit = "pt")))
+
+svg('map_2_test6v2.svg')
+print(a)
+dev.off()
+
+pdf('map_2_test6v2.pdf')
+print(a)
+dev.off()
+
+png('map_2_test6v2.png')
+print(a)
+dev.off()
+
+svg('map_2_test6v2.svg')
+print(a)
+dev.off()
+
+
+getwd()
+
+library(map)
+library(ggplot2)
+
+# Get US map
+usa <- map_data("state")
+
+# Draw the map and add the data points in myData
+
+ggplot() +
+  geom_path(data = usa, aes(x = long, y = lat, group = group)) +
+  geom_point(data = myData, aes(x = long, y = lat, size = pop), color = "red") 
+
+
+library(extrafontdb)
+library(extrafont)
+library(Rttf2pt1)
+loadfonts(quiet = T)
+font_import()
+y
+
+fonts()
+
+library(extrafont)
+font_import(pattern="Gill")
