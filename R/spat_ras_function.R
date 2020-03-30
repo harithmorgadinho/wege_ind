@@ -120,7 +120,11 @@ spat_ras <- function(target_area, input, x, y, species='binomial', category = 'c
   tmp <- unique(tmp)
   tmp <- merge(tmp, er_df, by.x = category, by.y = 'status', sort = TRUE)
 
+  if (!missing(ed)) {
+    tmp <- merge(tmp, input[,c(species,ed)], by.x = 'species', by.y = species, sort = TRUE)
+    tmp <- tmp[,-6]
 
+  }
   rgrid  <-  raster(extent(target_area), resolution = res,crs = CRS(crs_ta$proj4string))
   rgrid[] <- 1:ncell(rgrid)
   rgrid <- st_as_sf(rasterToPolygons(rgrid))
@@ -203,8 +207,9 @@ spat_ras <- function(target_area, input, x, y, species='binomial', category = 'c
       KBA_B1_temp <- lapply(1, function(x) if (any(temp_df$perc_kba > min_rangeB1)) {1} else {0})
 
 
-      df_temp <- cbind.data.frame(i,we=unlist(we_temp),wege=unlist(wege_temp),GE = unlist(ge_temp),ED = unlist(ed_temp),EDGE = unlist(edge_temp),kba_A1a = unlist(KBA_A1a_temp),kba_A1b = unlist(KBA_A1b_temp),kba_A1e = unlist(KBA_A1e_temp),kba_B1 = unlist(KBA_B1_temp))
+
     }
+    df_temp <- cbind.data.frame(i,we=unlist(we_temp),wege=unlist(wege_temp),GE = unlist(ge_temp),ED = unlist(ed_temp),EDGE = unlist(edge_temp),kba_A1a = unlist(KBA_A1a_temp),kba_A1b = unlist(KBA_A1b_temp),kba_A1e = unlist(KBA_A1e_temp),kba_B1 = unlist(KBA_B1_temp))
     df_final <- rbind(df_final,df_temp)
   }
 

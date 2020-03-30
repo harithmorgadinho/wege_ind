@@ -26,9 +26,9 @@
 get_wege <- function(target_area,input,x,y,species='binomial',category = 'category',res = 1) {
   require(sf)
   require(raster)
-if(is.null(input[[species]])){
-  stop(paste0("No column found with the name - ",paste(species)))
-}
+  if(is.null(input[[species]])){
+    stop(paste0("No column found with the name - ",paste(species)))
+  }
   if(is.null(input[[category]])){
     stop(paste0("No column found with the name - ",paste(category)))
   }
@@ -47,55 +47,55 @@ if(is.null(input[[species]])){
   }
   if (any(class(input) %in% 'SpatialPolygonsDataFrame')) {
     input <- st_as_sf(input)
-  if (!st_crs(target_area) == st_crs(input)) {
-    stop("Inputs have a different projection")
-  }
+    if (!st_crs(target_area) == st_crs(input)) {
+      stop("Inputs have a different projection")
+    }
   }
   if (any(class(input) %in% "data.frame")) {
     crs_ta <- st_crs(target_area)
     input <-  st_as_sf(x = input,coords = c(x,y),crs = crs_ta)
   }
 
-    sps_grid <- st_intersects(input,target_area)
-    intersected_object_t <- t(sps_grid)
-    sp_numbers <- intersected_object_t[1]
-    sp <- unique(input[[species]][sp_numbers[[1]]])
-    if (identical(sp, character(0))) {
-      stop("No species found in selected area")
+  sps_grid <- st_intersects(input,target_area)
+  intersected_object_t <- t(sps_grid)
+  sp_numbers <- intersected_object_t[1]
+  sp <- unique(input[[species]][sp_numbers[[1]]])
+  if (identical(sp, character(0))) {
+    stop("No species found in selected area")
+  }
+
+  if (input_cl == 'df_ob') {
+
+    rgrid  <-  raster(extent(input), resolution = res,crs = CRS(crs_ta$proj4string))
+    rgrid[] <- 1:ncell(rgrid)
+    rgrid <- st_as_sf(rasterToPolygons(rgrid))
+
+    iucn_to_grid_range <- function(iucn_shp,grid_to_use) {
+      r_grid_sf <- grid_to_use
+      sf_to_intersect <- iucn_shp
+      st_crs(r_grid_sf) <- st_crs(sf_to_intersect)
+      sps_grid <- st_intersects(sf_to_intersect,r_grid_sf)
+      intersected_object <- sps_grid
+
+
+
+      area <- unlist(lapply(intersected_object,length))
+
+      sp_range_df <- cbind.data.frame(species = iucn_shp[[species]],area/(res*res*10000))
+
+      return(sp_range_df)
     }
+    input <- input[input[[species]] %in% sp,]
+    input_combined <- aggregate(input,
+                                by = list(input$BINOMIAL),
+                                FUN = mean)
+    input_combined <- input_combined[,c('Group.1','geometry')]
+    colnames(input_combined)[1] <- species
 
-    if (input_cl == 'df_ob') {
-
-      rgrid  <-  raster(extent(input), resolution = res,crs = CRS(crs_ta$proj4string))
-      rgrid[] <- 1:ncell(rgrid)
-      rgrid <- st_as_sf(rasterToPolygons(rgrid))
-
-      iucn_to_grid_range <- function(iucn_shp,grid_to_use) {
-        r_grid_sf <- grid_to_use
-        sf_to_intersect <- iucn_shp
-        st_crs(r_grid_sf) <- st_crs(sf_to_intersect)
-        sps_grid <- st_intersects(sf_to_intersect,r_grid_sf)
-        intersected_object <- sps_grid
+    tmp <- iucn_to_grid_range(iucn_shp = input_combined,grid_to_use = rgrid)
 
 
-
-        area <- unlist(lapply(intersected_object,length))
-
-        sp_range_df <- cbind.data.frame(species = iucn_shp[[species]],area/(res*res*10000))
-
-        return(sp_range_df)
-      }
-      input <- input[input[[species]] %in% sp,]
-      input_combined <- aggregate(input,
-                     by = list(input$BINOMIAL),
-                     FUN = mean)
-      input_combined <- input_combined[,c('Group.1','geometry')]
-      colnames(input_combined)[1] <- species
-
-      tmp <- iucn_to_grid_range(iucn_shp = input_combined,grid_to_use = rgrid)
-
-
-    }else {
+  }else {
 
     area_input <- function(input,sp) {
       temp <- st_area(input[input[[species]] %in% sp,])
@@ -104,16 +104,15 @@ if(is.null(input[[species]])){
       return(temp <- temp/1000000)
     }
     all_area <- lapply(sp,area_input,input = input)
-    tmp <- cbind.data.frame(species = input$binomial[sp_numbers[[1]]],area = unlist(all_area))
-    }
+    tmp <- cbind.data.frame(species = sp,area = unlist(all_area))
+  }
 
-    tmp <- merge(tmp,input[,c(species,'category')],by.x = 'species',by.y = species)
-    tmp <- tmp[,-4]
-    er_df <- cbind.data.frame(status = c('DD','LC','NT','VU','EN','CR','EW','EX'),ER = c(0.0513,0.0009,0.0071,0.0513,0.4276,0.9688,1,1))
+  tmp <- merge(tmp,input[,c(species,'category')],by.x = 'species',by.y = species)
+  tmp <- tmp[,-4]
+  er_df <- cbind.data.frame(status = c('DD','LC','NT','VU','EN','CR','EW','EX'),ER = c(0.0513,0.0009,0.0071,0.0513,0.4276,0.9688,1,1))
 
-    tmp <- unique(tmp)
-    tmp <- merge(tmp, er_df, by.x = category, by.y = 'status', sort = TRUE)
+  tmp <- unique(tmp)
+  tmp <- merge(tmp, er_df, by.x = category, by.y = 'status', sort = TRUE)
 
-    return(lapply(1, function(x) sum(sqrt(1/tmp$area)*tmp$ER)))
+  return(lapply(1, function(x) sum(sqrt(1/tmp$area)*tmp$ER)))
 }
-
