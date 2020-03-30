@@ -20,11 +20,18 @@
 #' @importFrom sf st_area
 #' @importFrom sf st_transform
 #' @importFrom sf st_geometry
-
+#' @importFrom stats aggregate
+#' @importFrom raster rasterToPolygons
 
 get_wege <- function(target_area,input,x,y,species='binomial',category = 'category',res = 1) {
   require(sf)
   require(raster)
+if(is.null(input[[species]])){
+  stop(paste0("No column found with the name - ",paste(species)))
+}
+  if(is.null(input[[category]])){
+    stop(paste0("No column found with the name - ",paste(category)))
+  }
 
   if (any(class(input) %in% "sf")) {
     input_cl <- 'sf_ob'}else {input_cl <- 'df_ob'}
@@ -107,6 +114,6 @@ get_wege <- function(target_area,input,x,y,species='binomial',category = 'catego
     tmp <- unique(tmp)
     tmp <- merge(tmp, er_df, by.x = category, by.y = 'status', sort = TRUE)
 
-    return(wege_temp <- lapply(1, function(x) sum(sqrt(1/tmp$area)*tmp$ER)))
+    return(lapply(1, function(x) sum(sqrt(1/tmp$area)*tmp$ER)))
 }
 
