@@ -1,4 +1,4 @@
-#' @title get_wege
+#' @title get_edge
 #' @description A function to get the WEGE index value for a provided polygon.
 #' @param target_area  Either a sp or sf object to which to calculate the WEGE index.
 #' @param input Species ranges, either from a shapefile or from a georeferenced species list with a column for species, two columns for coordinates and one for the IUCN category.
