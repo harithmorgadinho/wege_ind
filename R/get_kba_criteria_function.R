@@ -1,4 +1,5 @@
-#' @title get_kba_criteria
+#' @name get_kba_criteria
+#' @title Function to get the KBA criteria
 #' @description A function to get the WEGE index value for a provided polygon.
 #' @param target_area  Either a sp or sf object to which to calculate the WEGE index.
 #' @param input Species ranges, either from a shapefile or from a georeferenced species list with a column for species, two columns for coordinates and one for the IUCN category.

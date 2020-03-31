@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_kba_criteria_function.R
 \name{get_kba_criteria}
 \alias{get_kba_criteria}
-\title{get_kba_criteria}
+\title{Function to get the KBA criteria}
 \usage{
 get_kba_criteria(target_area, input, x, y, species = "binomial",
   category = "category", res = 1)
