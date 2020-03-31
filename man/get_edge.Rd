@@ -4,8 +4,16 @@
 \alias{get_edge}
 \title{get_edge}
 \usage{
-get_edge(target_area, input, x, y, species = "binomial", ed = "ED",
-  category = "category", res = 1)
+get_edge(
+  target_area,
+  input,
+  x,
+  y,
+  species = "binomial",
+  ed = "ED",
+  category = "category",
+  res = 1
+)
 }
 \arguments{
 \item{target_area}{Either a sp or sf object to which to calculate the WEGE index.}
@@ -18,11 +26,11 @@ get_edge(target_area, input, x, y, species = "binomial", ed = "ED",
 
 \item{species}{name of the species column.}
 
+\item{ed}{name of the evolutionary distinctiveness column.}
+
 \item{category}{name of IUCN the category column. Terminology must be as follows: DD for Data Deficient, LC for Least Concern, NT for Near Threatened, EN, for Endangered, CR for Critically Endangered, EW for Extinct in the wild and EX for Extinct.}
 
 \item{res}{grid-cell size to use to calculate the range of the species in case a georeferenced species list was provided.}
-
-\item{ED}{name of the evolutionary distinctiveness column.}
 }
 \description{
 A function to get the WEGE index value for a provided polygon.

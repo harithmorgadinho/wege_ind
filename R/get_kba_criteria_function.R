@@ -23,8 +23,6 @@
 #' @importFrom sf st_geometry
 #' @importFrom stats aggregate
 #' @importFrom raster rasterToPolygons
-
-
 get_kba_criteria <- function(target_area,input,x,y,species='binomial',category = 'category',res = 1) {
   require(sf)
   require(raster)

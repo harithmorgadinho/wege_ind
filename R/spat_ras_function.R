@@ -5,12 +5,14 @@
 #' @param x name of the longitude column.
 #' @param y name of the latitude column.
 #' @param  species name of the species column.
-#' @param  ED name of the evolutionary distinctiveness column.
-#' @param  category name of IUCN the category column. Terminology must be as follows: DD for Data Deficient, LC for Least Concern, NT for Near Threatened, EN, for Endangered, CR for Critically Endangered, EW for Extinct in the wild and EX for Extinct.
+#' @param  ed name of the evolutionary distinctiveness column.
+#' @param  category name of IUCN the category column. Terminology must be as 
+#' follows: DD for Data Deficient, LC for Least Concern, NT for Near Threatened, EN, for Endangered, CR for Critically Endangered, EW for Extinct in the wild and EX for Extinct.
 #' @param  res grid-cell size to use to calculate the range of the species in case a georeferenced species list was provided.
 #' @examples
 #' get_wege(target_area,input,species = 'binomial',category = 'category')
-#' get_wege(target_area,input,x = 'decimallongitude',y = 'decimallatitude',species = 'BINOMIAL',category = 'category')
+#' get_wege(target_area,input,x = 'decimallongitude',y = 'decimallatitude',
+#' species = 'BINOMIAL',category = 'category')
 #'
 #'
 #'
@@ -24,7 +26,8 @@
 #' @importFrom stats aggregate
 #' @importFrom raster rasterToPolygons
 
-spat_ras <- function(target_area, input, x, y, species='binomial', category = 'category', ed = FALSE, res = 1) {
+spat_ras <- function(target_area, input, x, y, species='binomial',
+                     category = 'category', ed = FALSE, res = 1) {
   require(sf)
   require(raster)
 

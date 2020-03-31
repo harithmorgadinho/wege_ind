@@ -4,8 +4,15 @@
 \alias{get_wege}
 \title{get_wege}
 \usage{
-get_wege(target_area, input, x, y, species = "binomial",
-  category = "category", res = 1)
+get_wege(
+  target_area,
+  input,
+  x,
+  y,
+  species = "binomial",
+  category = "category",
+  res = 1
+)
 }
 \arguments{
 \item{target_area}{Either a sp or sf object to which to calculate the WEGE index.}

@@ -4,8 +4,16 @@
 \alias{spat_ras}
 \title{spat_ras}
 \usage{
-spat_ras(target_area, input, x, y, species = "binomial",
-  category = "category", ed = FALSE, res = 1)
+spat_ras(
+  target_area,
+  input,
+  x,
+  y,
+  species = "binomial",
+  category = "category",
+  ed = FALSE,
+  res = 1
+)
 }
 \arguments{
 \item{target_area}{Either a sp or sf object to which to calculate the WEGE index.}
@@ -20,9 +28,9 @@ spat_ras(target_area, input, x, y, species = "binomial",
 
 \item{category}{name of IUCN the category column. Terminology must be as follows: DD for Data Deficient, LC for Least Concern, NT for Near Threatened, EN, for Endangered, CR for Critically Endangered, EW for Extinct in the wild and EX for Extinct.}
 
-\item{res}{grid-cell size to use to calculate the range of the species in case a georeferenced species list was provided.}
+\item{ed}{name of the evolutionary distinctiveness column.}
 
-\item{ED}{name of the evolutionary distinctiveness column.}
+\item{res}{grid-cell size to use to calculate the range of the species in case a georeferenced species list was provided.}
 }
 \description{
 A function to get the WEGE index value for a provided polygon.
