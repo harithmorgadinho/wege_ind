@@ -17,7 +17,8 @@ get_kba_criteria(
 \arguments{
 \item{target_area}{Either a sp or sf object to which to calculate the WEGE index.}
 
-\item{input}{Species ranges, either from a shapefile or from a georeferenced species list with a column for species, two columns for coordinates and one for the IUCN category.}
+\item{input}{Species ranges, either from a shapefile or from a georeferenced species list with a column for species, two columns for coordinates and one for 
+the IUCN category.}
 
 \item{x}{name of the longitude column.}
 
@@ -25,17 +26,33 @@ get_kba_criteria(
 
 \item{species}{name of the species column.}
 
-\item{category}{name of IUCN the category column. Terminology must be as follows: DD for Data Deficient, LC for Least Concern, NT for Near Threatened, EN, for Endangered, CR for Critically Endangered, EW for Extinct in the wild and EX for Extinct.}
+\item{category}{name of IUCN the category column. Terminology must be as follows: DD for Data Deficient, LC for Least Concern, NT for Near Threatened, 
+EN, for Endangered, CR for Critically Endangered, EW for Extinct in the wild 
+and EX for Extinct.}
 
-\item{res}{grid-cell size to use to calculate the range of the species in case a georeferenced species list was provided.}
+\item{res}{grid-cell size to use to calculate the range of the species in 
+case a georeferenced species list was provided.}
 }
 \description{
 A function to get the WEGE index value for a provided polygon.
 }
 \examples{
-get_wege(target_area,input,species = 'binomial',category = 'category')
-get_wege(target_area,input,x = 'decimallongitude',y = 'decimallatitude',species = 'BINOMIAL',category = 'category')
+require(sp)
+require(sf)
 
+species <- letters[1:26]
+range_list <- list()
+for (i in seq_along(species)){
+  temp  <-  Polygon(cbind(runif(3,1,50),runif(3,1,50)))
+  range_list[[i]] <- Polygons(list(temp), ID = c(species[i]))}
+input <- st_as_sf(SpatialPolygons(range_list))
+categories <- c('LC','NT','VU','EN','CR')
+input$binomial <- species
+input$category <- sample(size = nrow(input),x = categories,replace = TRUE)
+target_area <- Polygon(cbind(runif(3,1,50),runif(3,1,50)))
+target_area <- Polygons(list(target_area), ID = 'Target area')
+target_area <- st_as_sf(SpatialPolygons(list(target_area)))
+get_kba_criteria(target_area,input)
 
 
 }
