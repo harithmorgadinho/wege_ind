@@ -30,7 +30,7 @@
 #' target_area <- Polygon(cbind(runif(3,1,50),runif(3,1,50)))
 #' target_area <- Polygons(list(target_area), ID = 'Target area')
 #' target_area <- st_as_sf(SpatialPolygons(list(target_area)))
-#' spat_ras(target_area,input,species = 'binomial',category = 'category')
+#' spat_ras(target_area,input,species = 'binomial',res=0.2)
 #' 
 #'@importFrom sf st_as_sf
 #'@importFrom sf st_geometry
