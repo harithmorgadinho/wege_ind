@@ -12,36 +12,7 @@
 #' and EX for Extinct.
 #' @param  res grid-cell size to use to calculate the range of the species in 
 #' case a georeferenced species list was provided.
-#' @examples
-#' require(sp)
-#' require(sf)
-#' 
-#' species <- letters[1:26]
-#' range_list <- list()
-#' for (i in seq_along(species)){
-#'   temp  <-  Polygon(cbind(runif(3,1,50),runif(3,1,50)))
-#'   range_list[[i]] <- Polygons(list(temp), ID = c(species[i]))}
-#' input <- st_as_sf(SpatialPolygons(range_list))
-#' categories <- c('LC','NT','VU','EN','CR')
-#' input$binomial <- species
-#' input$category <- sample(size = nrow(input),x = categories,replace = TRUE)
-
-#' target_area <- Polygon(cbind(runif(3,1,50),runif(3,1,50)))
-#' target_area <- Polygons(list(target_area), ID = 'Target area')
-#' target_area <- st_as_sf(SpatialPolygons(list(target_area)))
-#' get_kba_criteria(target_area,input)
-#'
-#'
-#'@importFrom sf st_as_sf
-#'@importFrom sf st_geometry
-#'@importFrom sf st_crs
-#'@importFrom sf st_intersection
-#'@importFrom raster extent
-#'@importFrom sp CRS
-#'@importFrom raster raster
-#'@importFrom raster ncell
-#'@importFrom graphics plot
-#'@importFrom utils stack
+#' @example examples/get_kba_criteria_function.R
 #' @export
 
 get_kba_criteria <- function(target_area,input,x,y,species='binomial', category 

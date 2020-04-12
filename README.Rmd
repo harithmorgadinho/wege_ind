@@ -1,0 +1,67 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+<!-- devtools::rmarkdown::render("README.Rmd") -->
+<!-- Rscript -e "library(knitr); knit('README.Rmd')" -->
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "README-"
+)
+```
+
+# WEGE index
+
+WEGE is an R package that allows the user to calculate the WEGE index for a particular area. Additionally it also calculates rasters of KBA criteria (A1a, A1b, A1e, and B1) Weighted endemism, the EDGE score, Evolutionary Distintiveness and Extintion risk.
+
+# Install
+
+The package can currently only be installed through GitHub:
+
+```{r gh-installation, include=TRUE, echo=TRUE, eval=FALSE}
+# install.packages("remotes")
+remotes::install_github("harithmorgadinho/wege_ind")
+```
+
+# Usage
+
+A simple example:
+
+```{r simple-example, include=TRUE, eval=FALSE}
+library(WEGE)
+library(sp)
+library(sf)
+
+# Dom: Hmmm doesn't work for me this example ...not running as part of the .Rmd
+species <- letters[1:26]
+range_list <- list()
+for (i in seq_along(species)){
+  temp  <-  Polygon(cbind(runif(3,1,50),runif(3,1,50)))
+  range_list[[i]] <- Polygons(list(temp), ID = c(species[i]))}
+input <- st_as_sf(SpatialPolygons(range_list))
+categories <- c('LC','NT','VU','EN','CR')
+input$binomial <- species
+input$category <- sample(size = nrow(input),x = categories,replace = TRUE)
+
+target_area <- Polygon(cbind(runif(3,1,50),runif(3,1,50)))
+target_area <- Polygons(list(target_area), ID = 'Target area')
+target_area <- st_as_sf(SpatialPolygons(list(target_area)))
+spat_ras(target_area,input,species = 'binomial',res=0.2)
+```
+
+# Example data
+
+```{r data-example, echo=TRUE}
+library(WEGE)
+# example data can be accessed...
+data("amph_afr_df")
+head(amph_afr_df)
+
+data("kruger_park")
+(kruger_park)
+```
+
