@@ -5,7 +5,3 @@
 \alias{WEGE}
 \title{WEGE: Describe the package here in more detail! CRAN will complain if you
 don't.}
-\description{
-WEGE: Describe the package here in more detail! CRAN will complain if you
-don't.
-}

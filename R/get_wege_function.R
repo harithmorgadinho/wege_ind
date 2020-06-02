@@ -12,25 +12,7 @@
 #' @param  res grid-cell size to use to calculate the range of the species in 
 #' 
 #' case a georeferenced species list was provided.
-#' @examples
-#' require(sp)
-#' require(sf)
-#' 
-#' species <- letters[1:26]
-#' range_list <- list()
-#' for (i in seq_along(species)){
-#'   temp  <-  Polygon(cbind(runif(3,1,50),runif(3,1,50)))
-#'   range_list[[i]] <- Polygons(list(temp), ID = c(species[i]))}
-#' input <- st_as_sf(SpatialPolygons(range_list))
-#' categories <- c('LC','NT','VU','EN','CR')
-#' input$binomial <- species
-#' input$category <- sample(size = nrow(input),x = categories,replace = TRUE)
-
-#' target_area <- Polygon(cbind(runif(3,1,50),runif(3,1,50)))
-#' target_area <- Polygons(list(target_area), ID = 'Target area')
-#' target_area <- st_as_sf(SpatialPolygons(list(target_area)))
-#' get_wege(target_area,input,species = 'binomial',category = 'category')
-#'
+#' @examples examples/get_wege_function.R
 #'
 #'@importFrom sf st_as_sf
 #'@importFrom sf st_geometry
@@ -83,8 +65,8 @@ get_wege <- function(target_area,input,x,y,species='binomial',category =
   sp_numbers <- unlist(intersected_object_t[1:nrow(target_area)])
   sp <- unique(input[[species]][sp_numbers])
   if (identical(sp, character(0))) {
-    stop("No species found in selected area")
-  }
+    print("No species found in selected area")
+  }else{
 
   if (input_cl == 'df_ob') {
 
@@ -137,4 +119,5 @@ get_wege <- function(target_area,input,x,y,species='binomial',category =
   tmp <- merge(tmp, er_df, by.x = category, by.y = 'status', sort = TRUE)
 
   return(lapply(1, function(x) sum(sqrt(1/tmp$area)*tmp$ER)))
-}
+  }
+  }

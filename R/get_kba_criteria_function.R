@@ -16,7 +16,7 @@
 #' @export
 
 get_kba_criteria <- function(target_area,input,x,y,species='binomial', category 
-                             = 'category',res = 1) {
+                             = 'category', res = 1) {
 
   
   if (any(class(input) %in% "sf")) {
@@ -84,31 +84,31 @@ get_kba_criteria <- function(target_area,input,x,y,species='binomial', category
     tmp <- tmp[,-4]
     tmp <- unique(tmp)
 
-    min_rangeA1a <- (200*res)+1
-    min_rangeA1b <- (100*res)+1
-    min_rangeB1 <- (1000*res)+1
+    min_rangeA1a <- (200*res) + 1
+    min_rangeA1b <- (100*res) + 1
+    min_rangeB1 <- (1000*res) + 1
 
-    KBA_A1a <- tmp[tmp$category == "CR"|tmp$category == "EN" & tmp$area < 
+    KBA_A1a <- tmp[tmp$category == "CR" | tmp$category == "EN" & tmp$area < 
                      min_rangeA1a,]
-    if(nrow(KBA_A1a) == 0){
+    if (nrow(KBA_A1a) == 0) {
       KBA_A1a_2 <- data.frame()
     }else{KBA_A1a_2 <- cbind.data.frame(species = KBA_A1a$species,A1a = 'yes')}
 
 
     KBA_A1b <- tmp[tmp$category == "VU" & tmp$area < min_rangeA1b,]
-    if(nrow(KBA_A1b) == 0){
+    if (nrow(KBA_A1b) == 0) {
       KBA_A1b_2 <- data.frame()
       
     }else{KBA_A1b_2 <- cbind.data.frame(species = KBA_A1b$species,A1b = 'yes')}
 
-    KBA_A1e <- tmp[tmp$perc_kba == 100,]
-    if(nrow(KBA_A1e) == 0){
+    KBA_A1e <- tmp[tmp$category == "CR" | tmp$category == "EN" & tmp$perc_kba == 100,]
+    if (nrow(KBA_A1e) == 0) {
       KBA_A1e_2 <- data.frame()
     }else{
       KBA_A1e_2 <- cbind.data.frame(species = KBA_A1e$species,A1e = 'yes')}
 
     KBA_B1 <- tmp[tmp$perc_kba < min_rangeB1,]
-    if(nrow(KBA_B1) == 0){
+    if (nrow(KBA_B1) == 0) {
       KBA_B1_2 <- data.frame()
     }else{
       KBA_B1_2 <- cbind.data.frame(species = KBA_B1$species,B1 = 'yes')}
@@ -123,7 +123,7 @@ get_kba_criteria <- function(target_area,input,x,y,species='binomial', category
     }
     all_area <- lapply(sp,area_input,input = input)
     tmp <- cbind.data.frame(species = sp,area = unlist(all_area))
-    input_subset <- st_intersection(input,target_area)
+    input_subset <- suppressWarnings(st_intersection(input,target_area))
     area_kba <- lapply(sp,area_input,input = input_subset)
     tmp_2 <- cbind.data.frame(species = sp,area_kba = unlist(area_kba))
     tmp <- merge(tmp,input[,c(species,'category')],by.x = 'species',by.y = 
@@ -137,57 +137,57 @@ get_kba_criteria <- function(target_area,input,x,y,species='binomial', category
     min_rangeB1 <- 10
 
 
-    KBA_A1a <- tmp[tmp$category == "CR"|tmp$category == "EN" & tmp$perc_kba > min_rangeA1a,]
-    if(nrow(KBA_A1a) == 0){
-      KBA_A1a_2=data.frame()
+    KBA_A1a <- tmp[tmp$category == "CR" | tmp$category == "EN" & tmp$perc_kba > min_rangeA1a,]
+    if (nrow(KBA_A1a) == 0) {
+      KBA_A1a_2 <- data.frame()
     }else{KBA_A1a_2 <- cbind.data.frame(species = KBA_A1a$species,A1a = 'yes')}
 
 
-    KBA_A1b=tmp[tmp$category =="VU" & tmp$perc_kba > min_rangeA1b,]
-    if(nrow(KBA_A1b) == 0){
-      KBA_A1b_2=data.frame()
+    KBA_A1b <- tmp[tmp$category == "VU" & tmp$perc_kba > min_rangeA1b,]
+    if (nrow(KBA_A1b) == 0) {
+      KBA_A1b_2 = data.frame()
     }else{KBA_A1b_2 <- cbind.data.frame(species = KBA_A1b$species,A1b = 'yes')}
 
-    KBA_A1e=tmp[tmp$perc_kba == 100,]
-    if(nrow(KBA_A1e) == 0){
+    KBA_A1e <- tmp[tmp$perc_kba == 100,]
+    if (nrow(KBA_A1e) == 0) {
       KBA_A1e_2 <- data.frame()
     }else{
       KBA_A1e_2 <- cbind.data.frame(species = KBA_A1e$species,A1e = 'yes')}
 
-    KBA_B1 <- tmp[tmp$perc_kba>min_rangeB1,]
-    if(nrow(KBA_B1) == 0){
+    KBA_B1 <- tmp[tmp$perc_kba > min_rangeB1,]
+    if (nrow(KBA_B1) == 0) {
       KBA_B1_2 <- data.frame()
     }else{
       KBA_B1_2 <- cbind.data.frame(species = KBA_B1$species,B1 = 'yes')}
 
   }
 
-  kba_df_tmp=unique(rbind(KBA_A1a,KBA_A1b,KBA_A1e,KBA_B1))
-  if (nrow(kba_df_tmp) == 0){
+  kba_df_tmp = unique(rbind(KBA_A1a,KBA_A1b,KBA_A1e,KBA_B1))
+  if (nrow(kba_df_tmp) == 0) {
     return(cat('No species found to trigger KBA status\n'))
   }else{
-    if(nrow(KBA_A1a_2) == 0){
+    if (nrow(KBA_A1a_2) == 0) {
       kba_df_tmp$A1a <- 'no'}else{
         kba_df_tmp <- merge(kba_df_tmp,KBA_A1a_2,by.x = 'species',by.y 
-                            = 'species',all.x=TRUE)}
-    if(nrow(KBA_A1b_2) == 0){
+                            = 'species',all.x = TRUE)}
+    if (nrow(KBA_A1b_2) == 0) {
       kba_df_tmp$A1b <- 'no'}else{
         kba_df_tmp <- merge(kba_df_tmp,KBA_A1b_2,by.x = 'species',by.y 
-                            = 'species',all.x=TRUE)}
-    if(nrow(KBA_A1e_2) == 0){
+                            = 'species',all.x = TRUE)}
+    if (nrow(KBA_A1e_2) == 0) {
       kba_df_tmp$A1e <- 'no'}else{
         kba_df_tmp <- merge(kba_df_tmp,KBA_A1e_2,by.x = 'species',by.y 
-                            = 'species',all.x=TRUE)}
-    if(nrow(KBA_B1_2) == 0){
+                            = 'species',all.x = TRUE)}
+    if (nrow(KBA_B1_2) == 0) {
       kba_df_tmp$B1 <- 'no'}else{
         kba_df_tmp <- merge(kba_df_tmp,KBA_B1_2,by.x = 'species',by.y 
-                            = 'species',all.x=TRUE)}
+                            = 'species',all.x = TRUE)}
     
     kba_df_tmp$A1a <- as.character(kba_df_tmp$A1a)
     kba_df_tmp$A1b <- as.character(kba_df_tmp$A1b)
     kba_df_tmp$A1e <- as.character(kba_df_tmp$A1e)
     kba_df_tmp$B1 <- as.character(kba_df_tmp$B1)
-    kba_df_tmp[is.na(kba_df_tmp)]='no'
+    kba_df_tmp[is.na(kba_df_tmp)] = 'no'
 
     return(kba_df_tmp)
   }
