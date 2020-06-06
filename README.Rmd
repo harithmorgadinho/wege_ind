@@ -31,10 +31,11 @@ remotes::install_github("harithmorgadinho/wege_ind")
 
 A spatial raster example:
 
-```{r simple-example, include=TRUE, eval=FALSE}
+```{r simple-example, include=TRUE, eval=TRUE}
 library(WEGE)
 library(sp)
 library(sf)
+library(raster)
 
 species <- letters[1:26]
 range_list <- list()
@@ -78,5 +79,55 @@ target_area <- st_as_sf(SpatialPolygons(list(target_area)))
 get_edge(target_area = target_area,input = input,species = 'binomial',category = 'category')
 ```
 
+A get_wege example:
+
+```{r get_wege-example, include=TRUE, eval=TRUE}
+library(sp)
+library(sf)
+library(WEGE)
+
+species <- letters[1:26]
+range_list <- list()
+for (i in seq_along(species)){
+  temp  <-  Polygon(cbind(runif(4,1,50),runif(4,1,50)))
+  range_list[[i]] <- Polygons(list(temp), ID = c(species[i]))}
+input <- st_as_sf(SpatialPolygons(range_list))
+categories <- c('LC','NT','VU','EN','CR')
+input$binomial <- species
+input$category <- sample(size = nrow(input),x = categories,replace = TRUE)
+
+target_area <- Polygon(cbind(runif(4,1,50),runif(4,1,50)))
+target_area <- Polygons(list(target_area), ID = 'Target area')
+target_area <- st_as_sf(SpatialPolygons(list(target_area)))
+get_wege(target_area,input,species = 'binomial',category = 'category')
+```
+
+A get_kba-criteria example:
+
+```{r get_kba_criteria-example, include=TRUE, eval=TRUE}
+library(WEGE)
+library(sp)
+library(sf)
+
+species <- letters[1:26]
+range_list <- list()
+for (i in seq_along(species)){
+  temp0 <- cbind(runif(3,1,50),runif(3,1,50))
+  temp  <-  Polygon(rbind(temp0,temp0[1,]))
+  range_list[[i]] <- Polygons(list(temp), ID = c(species[i]))
+}
+input <- st_as_sf(SpatialPolygons(range_list))
+categories <- c('LC','NT','VU','EN','CR')
+input$binomial <- species
+input$category <- sample(size = nrow(input),x = categories,replace = TRUE)
+
+temp0 <- cbind(runif(3,1,50),runif(3,1,50))
+target_area <- Polygon(rbind(temp0,temp0[1,]))
+target_area <- Polygons(list(target_area), ID = 'Target area')
+target_area <- st_as_sf(SpatialPolygons(list(target_area)))
+get_kba_criteria(target_area,input)
+
+```
+
 # Citation:
-Farooq, H. 
+Farooq, H., Azevedo, J., Belluardo F., Nanvonamuquitxo, C., Bennett, D., Moat, J. Soares, A., Faurby, S., Antonelli, A. WEGE: A new metric for ranking locations for biodiversity conservation. in prep.

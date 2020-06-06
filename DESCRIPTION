@@ -1,11 +1,10 @@
 Package: WEGE
 Type: Package
-Title: WEGE
+Title: WEGE: A new metric for ranking locations for biodiversity conservation
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Author: Farooq, H., Azevedo, J., Belluardo F., Nanvonamuquitxo, C., Bennett, D., Moat, J. Soares, A., Faurby, S., Antonelli, A.
+Maintainer: The package maintainer <harithmorgadinho@gmail.com>
+Description: WEGE is an R package that allows the user to calculate the WEGE index for a particular area. Additionally it also calculates rasters of KBA criteria (A1a, A1b, A1e, and B1) Weighted endemism, the EDGE score, Evolutionary Distintiveness and Extintion risk.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

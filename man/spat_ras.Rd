@@ -11,7 +11,7 @@ spat_ras(
   y,
   species = "binomial",
   category = "category",
-  ed = FALSE,
+  ed,
   res = 1
 )
 }
@@ -41,10 +41,11 @@ case a georeferenced species list was provided.}
 A function to get the WEGE index value for a provided polygon.
 }
 \examples{
-\dontrun{
+
 library(WEGE)
 library(sp)
 library(sf)
+library(raster)
 
  species <- sample(letters, 10)
  range_list <- list()
@@ -57,10 +58,10 @@ library(sf)
  categories <- c('LC','NT','VU','EN','CR')
  input$binomial <- species
  input$category <- sample(size = nrow(input),x = categories,replace = TRUE)
- 
+ temp0 <- cbind(runif(3,1,50),runif(3,1,50))
  target_area <- Polygon(rbind(temp0,temp0[1,]))
  target_area <- Polygons(list(target_area), ID = 'Target area')
  target_area <- st_as_sf(SpatialPolygons(list(target_area)))
- spat_ras(target_area, input,species = 'binomial', res=0.5)
-}
+ spat_ras(target_area, input,species = 'binomial', res=0.3)
+
 }

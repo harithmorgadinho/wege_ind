@@ -17,7 +17,7 @@
 #' @export
 
 spat_ras <- function(target_area, input, x, y, species='binomial',
-                     category = 'category', ed = FALSE, res = 1) {
+                     category = 'category', ed, res = 1) {
 
 
   if (is.null(input[[species]])) {
@@ -199,7 +199,7 @@ spat_ras <- function(target_area, input, x, y, species='binomial',
 
       KBA_A1b_temp <- lapply(1, function(x) if (any(temp_df[temp_df$category == "VU",]$perc_kba > min_rangeA1b)) {1} else {0})
 
-      KBA_A1e_temp <- lapply(1, function(x) if (any(temp_df$perc_kba == 100)) {1
+      KBA_A1e_temp <- lapply(1, function(x) if (any(temp_df[temp_df$category == "CR" | temp_df$category == "EN",]$perc_kba == 100)) {1
         } else {0})
 
       KBA_B1_temp <- lapply(1, function(x) if (any(temp_df$perc_kba > 
@@ -208,8 +208,7 @@ spat_ras <- function(target_area, input, x, y, species='binomial',
 
 
     }
-    df_temp <- cbind.data.frame(i,we=unlist(we_temp),wege=unlist(wege_temp),GE = unlist(ge_temp),ED = unlist(ed_temp),EDGE = unlist(edge_temp),kba_A1a = unlist(KBA_A1a_temp),kba_A1b = unlist(KBA_A1b_temp),kba_A1e = unlist(KBA_A1e_temp),
-                                kba_B1 = unlist(KBA_B1_temp))
+    df_temp <- cbind.data.frame(i,we=unlist(we_temp),wege=unlist(wege_temp),GE = unlist(ge_temp),ED = unlist(ed_temp),EDGE = unlist(edge_temp),kba_A1a = unlist(KBA_A1a_temp),kba_A1b = unlist(KBA_A1b_temp),kba_A1e = unlist(KBA_A1e_temp),kba_B1 = unlist(KBA_B1_temp))
     df_final <- rbind(df_final,df_temp)
   }
 
@@ -249,9 +248,9 @@ spat_ras <- function(target_area, input, x, y, species='binomial',
   r_Kbas[r_Kbas > 0] <- 1
 
 
-  raster_stack <- stack(r_A1a,r_A1b,r_A1e,r_B1,r_GE,r_ED,r_EDGE,r_wege,r_we,
-                        r_Kbas)
+  raster_stack <- raster::stack(r_A1a,r_A1b,r_A1e,r_B1,r_GE,r_ED,r_EDGE,r_wege,r_we,r_Kbas)
+  
   names(raster_stack) <- c('A1a','A1b','A1e','B1','GE','ED','EDGE','WEGE','WE','KBAs')
-  plot(r_Kbas)
+  raster::plot(r_Kbas)
   return(raster_stack)
 }
