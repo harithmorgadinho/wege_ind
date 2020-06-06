@@ -64,5 +64,7 @@ temp0 <- cbind(runif(3,1,50),runif(3,1,50))
 target_area <- Polygon(rbind(temp0,temp0[1,]))
 target_area <- Polygons(list(target_area), ID = 'Target area')
 target_area <- st_as_sf(SpatialPolygons(list(target_area)))
+
 get_edge(target_area = target_area,input = input,species = 'binomial',category = 'category')
+
 }

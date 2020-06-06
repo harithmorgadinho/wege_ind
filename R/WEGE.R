@@ -1,28 +1,5 @@
-#' WEGE: Describe the package here in more detail! CRAN will complain if you
-#' don't.
-#'
+#' WEGE: A NEW METRIC FOR RANKING LOCATIONS FOR BIODIVERSITY CONSERVATION
+#' @description WEGE is an R package that allows the user to calculate the WEGE index for a particular area. Additionally it also calculates rasters of KBA criteria (A1a, A1b, A1e, and B1) Weighted endemism, the EDGE score, Evolutionary Distintiveness and Extintion risk.
 #' @docType package
 #' @name WEGE
 NULL
-
-#' amph_afr_df
-#'
-#' @format A data frame ...
-#' \describe{
-#'   \item{x}{x, stuff}
-#'   \item{y}{y, stuff}
-#'   ...
-#' }
-#' @source Where it came from
-"amph_afr_df"
-
-#' kruger_park
-#'
-#' @format A data frame ...
-#' \describe{
-#'   \item{x}{x, stuff}
-#'   \item{y}{y, stuff}
-#'   ...
-#' }
-#' @source Where it came from
-"kruger_park"

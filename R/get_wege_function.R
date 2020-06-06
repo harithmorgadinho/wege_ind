@@ -12,7 +12,7 @@
 #' @param  res grid-cell size to use to calculate the range of the species in 
 #' 
 #' case a georeferenced species list was provided.
-#' @examples examples/get_wege_function.R
+#' @example examples/get_wege_function.R
 #'
 #'@importFrom sf st_as_sf
 #'@importFrom sf st_geometry

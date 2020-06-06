@@ -41,6 +41,7 @@ case a georeferenced species list was provided.}
 A function to get the WEGE index value for a provided polygon.
 }
 \examples{
+\dontrun{
 library(WEGE)
 library(sp)
 library(sf)
@@ -60,5 +61,6 @@ library(sf)
  target_area <- Polygon(rbind(temp0,temp0[1,]))
  target_area <- Polygons(list(target_area), ID = 'Target area')
  target_area <- st_as_sf(SpatialPolygons(list(target_area)))
- spat_ras(target_area, input,species = 'binomial', res=0.2)
+ spat_ras(target_area, input,species = 'binomial', res=0.5)
+}
 }
