@@ -134,7 +134,7 @@ spat_ras <- function(target_area, input, x, y, species='binomial',
 
     list_final <- list()
     for (i in seq_along(intersected_object_t)) {
-      cat(i,length(intersected_object_t),'\n')
+      cat(i,length(intersected_object_t))
       list_final[i] <- intersected_object_t[i]
     }
 
@@ -185,9 +185,9 @@ spat_ras <- function(target_area, input, x, y, species='binomial',
 
 
       if (!missing(ed)) {
-        edge_temp <- lapply(1, function(x) sum(log((temp_df$ED)*(temp_df$ER + 1
+        edge_temp <- lapply(1, function(x) sum(log((temp_df$ed)*(temp_df$ER + 1
                                                                  ))))
-        ed_temp <- lapply(1, function(x) sum(temp_df$ED))}else{
+        ed_temp <- lapply(1, function(x) sum(temp_df$ed))}else{
           ed_temp <- 0
           edge_temp <- 0
         }
@@ -212,7 +212,7 @@ spat_ras <- function(target_area, input, x, y, species='binomial',
     df_final <- rbind(df_final,df_temp)
   }
 
-  r  <-  raster(extent(target_area), resolution = res,crs = 
+  r  <-  raster(raster::extent(target_area), resolution = res,crs = 
                   CRS(crs_ta$proj4string))
 
   r_GE <- r
@@ -251,6 +251,6 @@ spat_ras <- function(target_area, input, x, y, species='binomial',
   raster_stack <- raster::stack(r_A1a,r_A1b,r_A1e,r_B1,r_GE,r_ED,r_EDGE,r_wege,r_we,r_Kbas)
   
   names(raster_stack) <- c('A1a','A1b','A1e','B1','GE','ED','EDGE','WEGE','WE','KBAs')
-  raster::plot(r_Kbas)
+  raster::plot(raster_stack)
   return(raster_stack)
 }
