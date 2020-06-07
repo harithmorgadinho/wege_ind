@@ -1,10 +1,10 @@
 Package: WEGE
 Type: Package
-Title: A New Metric For Ranking Locations For Biodiversity Conservation
+Title: A Metric to Rank Locations For Biodiversity Conservation
 Version: 0.1.0
-Author: Farooq, H., Azevedo, J., Belluardo F., Nanvonamuquitxo, C., Bennett, D., Moat, J. Soares, A., Faurby, S., Antonelli, A.
+Author: Farooq, H., Azevedo, J., Belluardo F., Nanvonamuquitxo, C., Bennett, D., Moat, J., Soares, A., Faurby, S. & Antonelli, A.
 Maintainer: Harith Farooq <harithmorgadinho@gmail.com>
-Description: Calculates the WEGE index for a particular area. Additionally it also calculates rasters of KBA criteria (A1a, A1b, A1e, and B1) Weighted endemism, the EDGE score, Evolutionary Distinctiveness and Extinction risk.
+Description: Calculates the WEGE index for a particular area. Additionally it also calculates rasters of KBA criteria (A1a, A1b, A1e, and B1) Weighted endemism, the EDGE score, Evolutionary Distinctiveness and Extinction risk. Farooq, H., Azevedo, J., Belluardo F., Nanvonamuquitxo, C., Bennett, D., Moat, J., Soares, A., Faurby, S. & Antonelli, A. (2020). Wege: A New Metric for Ranking Locations for Biodiversity Conservation. bioRxiv. https://doi.org/10.1101/2020.01.17.910299.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
