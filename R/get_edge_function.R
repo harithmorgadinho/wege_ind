@@ -17,9 +17,8 @@
 #' @param  res grid-cell size to use to calculate the range of the species in 
 #' case a georeferenced species list was provided.
 #' @example examples/get_edge_function.R
+#' @return list
 #' @export
-
-
 get_edge <- function(target_area,input,x,y,species='binomial', ed = 'ED', category = 'category', res = 1) {
 
   if(is.null(input[[species]])){

@@ -13,8 +13,8 @@
 #' @param  res grid-cell size to use to calculate the range of the species in 
 #' case a georeferenced species list was provided.
 #' @example examples/get_kba_criteria_function.R
+#' @return data.frame
 #' @export
-
 get_kba_criteria <- function(target_area,input,x,y,species='binomial', category 
                              = 'category', res = 1) {
 

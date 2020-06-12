@@ -33,6 +33,9 @@ and EX for Extinct.}
 \item{res}{grid-cell size to use to calculate the range of the species in 
 case a georeferenced species list was provided.}
 }
+\value{
+data.frame
+}
 \description{
 A function to get the WEGE index value for a provided polygon.
 }

@@ -34,6 +34,9 @@ and EX for Extinct.}
 
 case a georeferenced species list was provided.}
 }
+\value{
+list
+}
 \description{
 A function to get the WEGE index value for a provided polygon.
 }

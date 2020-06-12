@@ -15,8 +15,8 @@
 #' @param  res grid-cell size to use to calculate the range of the species in 
 #' case a georeferenced species list was provided.
 #' @example examples/spat_ras_function.R
+#' @return raster_stack object
 #' @export
-
 spat_ras <- function(target_area, input, x, y, species='binomial',
                      category = 'category', show_progress = FALSE, ed, res = 1) {
 

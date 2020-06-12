@@ -25,7 +25,7 @@
 #'@importFrom graphics plot
 #'@importFrom utils stack
 #' @export
-
+#' @return list
 get_wege <- function(target_area,input,x,y,species='binomial',category = 
                        'category',res = 1) {
 
