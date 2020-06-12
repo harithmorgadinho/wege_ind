@@ -65,7 +65,7 @@ get_wege <- function(target_area,input,x,y,species='binomial',category =
   sp_numbers <- unlist(intersected_object_t[1:nrow(target_area)])
   sp <- unique(input[[species]][sp_numbers])
   if (identical(sp, character(0))) {
-    print("No species found in selected area")
+    message("No species found in selected area")
   }else{
 
   if (input_cl == 'df_ob') {

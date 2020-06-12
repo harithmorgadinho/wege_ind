@@ -164,7 +164,7 @@ get_kba_criteria <- function(target_area,input,x,y,species='binomial', category
 
   kba_df_tmp = unique(rbind(KBA_A1a,KBA_A1b,KBA_A1e,KBA_B1))
   if (nrow(kba_df_tmp) == 0) {
-    return(cat('No species found to trigger KBA status\n'))
+    return(message('No species found to trigger KBA status\n'))
   }else{
     if (nrow(KBA_A1a_2) == 0) {
       kba_df_tmp$A1a <- 'no'}else{

@@ -60,7 +60,7 @@ get_edge <- function(target_area,input,x,y,species='binomial', ed = 'ED', catego
   sp_numbers <- unlist(intersected_object_t[1:nrow(target_area)])
   sp <- unique(input[[species]][sp_numbers])
   if (identical(sp, character(0))) {
-    print("No species found in selected area")
+    message("No species found in selected area")
   }else{
   tmp <- input[input[[species]] %in% sp,]
   sf::st_geometry(tmp) <- NULL

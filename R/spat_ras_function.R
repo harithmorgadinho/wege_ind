@@ -11,13 +11,14 @@
 #' follows: DD for Data Deficient, LC for Least Concern, NT for Near Threatened, 
 #' EN, for Endangered, CR for Critically Endangered, EW for Extinct in the wild 
 #' and EX for Extinct.
+#' @param show_progress Progress of the analysis by showing the number of the grid where the function is calculating the different indices.
 #' @param  res grid-cell size to use to calculate the range of the species in 
 #' case a georeferenced species list was provided.
 #' @example examples/spat_ras_function.R
 #' @export
 
 spat_ras <- function(target_area, input, x, y, species='binomial',
-                     category = 'category', ed, res = 1) {
+                     category = 'category', show_progress = FALSE, ed, res = 1) {
 
 
   if (is.null(input[[species]])) {
@@ -134,7 +135,9 @@ spat_ras <- function(target_area, input, x, y, species='binomial',
 
     list_final <- list()
     for (i in seq_along(intersected_object_t)) {
+      if(show_progress == TRUE) {
       cat(i,length(intersected_object_t))
+      }  
       list_final[i] <- intersected_object_t[i]
     }
 
@@ -162,7 +165,6 @@ spat_ras <- function(target_area, input, x, y, species='binomial',
   df_final = data.frame()
 
   for (i in seq_along(sp_grid)) {
-    #cat(i,length(sp_grid),'\n')
     temp_df <- tmp[tmp$species %in% sp_grid[[i]],]
 
     if (nrow(temp_df) == 0) {
@@ -181,7 +183,6 @@ spat_ras <- function(target_area, input, x, y, species='binomial',
       we_temp <- lapply(1, function(x) sum(1/temp_df$area))
 
       wege_temp <- lapply(1, function(x) sum(sqrt(1/temp_df$area)*temp_df$ER))
-
 
 
       if (!missing(ed)) {

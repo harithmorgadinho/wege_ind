@@ -11,6 +11,7 @@ spat_ras(
   y,
   species = "binomial",
   category = "category",
+  show_progress = FALSE,
   ed,
   res = 1
 )
@@ -31,6 +32,8 @@ the IUCN category.}
 follows: DD for Data Deficient, LC for Least Concern, NT for Near Threatened, 
 EN, for Endangered, CR for Critically Endangered, EW for Extinct in the wild 
 and EX for Extinct.}
+
+\item{show_progress}{Progress of the analysis by showing the number of the grid where the function is calculating the different indices.}
 
 \item{ed}{name of the evolutionary distinctiveness column.}
 
